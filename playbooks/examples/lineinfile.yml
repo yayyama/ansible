@@ -1,0 +1,9 @@
+- hosts: '{{ hosts }}' 
+  tasks:
+    - lineinfile: dest=/tmp/foo
+                  create=yes
+                  regexp='^{{ item | replace('$', '\\\\$') }}$'
+                  line='{{ item }}'
+      with_items:
+        - '$line1'
+        - '$line2'
