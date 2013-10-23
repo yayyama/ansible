@@ -1,0 +1,14 @@
+- hosts: '{{ hosts }}'
+  vars:
+    sshd_config: /etc/ssh/sshd_config
+    ssh_port: 10022
+  tasks:
+    - name: change ssh port
+      lineinfile: dest={{ sshd_config }}
+                  regexp='^Port \d+'
+                  insertafter='^#Port \d+'
+                  line='Port {{ ssh_port }}'
+      notify: restart sshd
+  handlers:
+    - name: restart sshd
+      service: name=sshd state=restarted
